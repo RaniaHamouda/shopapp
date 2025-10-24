@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOUNG | Men's Clothing Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/CDLBNt+zO0U7U8H9M/B8A7U4JzG+k5vW8P+8Z6uE4Gj3L5zG8Y8R/L+S7Ww==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Define updated colors (Dark Black and Burgundy) */
+        :root {
+            --bg-dark: #0B0B0B;        /* Very Dark Black */
+            --input-bg-dark: #18181b;  /* Input field background */
+            --text-light: #F8F8F8;     /* Near White text */
+            --accent-color: #C0392B;   /* Burgundy/Dark Red for accents */
+            --secondary-steel: #94A3B8; /* Soft Steel Gray */
+            --card-bg: #0B0B0B; /* Darker to match the request */
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', 'Arial', sans-serif;
+            /* Set default direction to LTR for English */
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary-steel); border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+        /* General element resets */
+        .product-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            background-color: var(--card-bg); 
+            border-radius: 0 !important; 
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(192, 57, 43, 0.4), 0 4px 6px -4px rgba(192, 57, 43, 0.2); 
+        }
+
+        /* Unify primary button appearance (remove rounded corners) */
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--text-light); 
+            font-weight: 600;
+            transition: opacity 0.2s;
+            border-radius: 0 !important;
+        }
+        .btn-accent:hover {
+            opacity: 0.85;
+        }
+        
+        /* Ensure all rounded-* elements are rectangular EXCEPT for WhatsApp Checkout */
+        .rounded-lg, .rounded-xl, .rounded-full, .rounded-md {
+             border-radius: 0 !important;
+        }
+        
+        /* Circular Cart Counter */
+        #cart-count {
+            border-radius: 50% !important; 
+            min-width: 20px; 
+        }
+        
+        /* Circular Cart Images */
+        .cart-item-image {
+            border-radius: 50% !important;
+        }
+
+        /* Input field styling */
+        .input-field {
+            background-color: var(--input-bg-dark);
+            border: 1px solid var(--secondary-steel);
+            color: var(--text-light);
+        }
+
+        /* Floating WhatsApp Icon */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px; 
+            background-color: #25D366;
+            color: #FFF;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Custom style for requested visual changes */
+        /* تصغير طول المنتج (الصورة): من 3/4 إلى 4/5 */
+        .product-image-large {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 4/5; 
+            margin-bottom: 1rem;
+            cursor: pointer; /* Added for image clickability */
+        }
+        
+        /* Custom modal backdrop: Black, 50% transparent (as requested) */
+        .modal {
+            background-color: rgba(0, 0, 0, 0.5); /* 50% transparent black */
+        }
+        
+        /* Custom Shadow for Navbar (Red/Burgundy shadow) */
+        #navbar {
+            box-shadow: 0 4px 10px rgba(192, 57, 43, 0.4); /* Stronger, accent-colored shadow */
+             /* زيادة طول الناف بار */
+            height: 80px; 
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Modal Size Adjustment (max-w-xl is roughly 50% width on desktop) */
+        .modal-content-xl {
+            max-width: 60rem; /* Custom wide size */
+            width: 95%; /* Ensure responsiveness */
+        }
+        
+        /* Category Button Styling (Larger with Red Shadow) */
+        .category-btn {
+            font-size: 1.1rem; /* Slightly larger text */
+            padding: 0.6rem 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Default subtle shadow */
+        }
+        .category-btn:hover, .category-btn.ring-2 {
+            box-shadow: 0 0 8px 3px rgba(192, 57, 43, 0.6); /* Red shadow on hover/active */
+            border-color: var(--accent-color) !important;
+        }
+        
+        /* Custom style for back button (Arrow icon, no background) */
+        .back-button-icon {
+            background: none;
+            border: none;
+            color: var(--secondary-steel);
+            transition: color 0.2s, transform 0.2s;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .back-button-icon:hover {
+            color: var(--accent-color);
+            transform: translateX(-5px); /* Subtle shift on hover */
+        }
+        
+        /* Review Icon styling (Updated to fit next to stars) */
+        .review-icon-product-card {
+            color: var(--accent-color); /* Burgundy color */
+            font-size: 1.25rem; /* Slightly larger */
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: inline-flex; /* Ensure it stays with the text/stars */
+            align-items: center;
+            margin-left: 0.5rem; /* Space from rating */
+        }
+        .review-icon-product-card:hover {
+            opacity: 0.7;
+        }
+        .product-card {
+            position: relative; /* Ensure review icon position works */
+        }
+
+        /* About Section Styling (No border, 2% shadow) */
+        .about-card {
+            border: none !important;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Low 2% shadow approximation */
+        }
+        
+        /* Full Screen Image Modal Style */
+        .fullscreen-image-modal-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body dir="ltr">
+    <div id="image-modal" class="modal fixed inset-0 bg-black bg-opacity-90 hidden z-[300] flex items-center justify-center" onclick="this.classList.add('hidden')">
+        <img id="modal-image" src="" alt="Product Image" class="fullscreen-image-modal-content" onclick="event.stopPropagation()">
+    </div>
+    
+    <div id="confirm-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[200] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-8 w-full max-w-lg shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <h3 class="text-2xl font-bold mb-4" style="color: var(--accent-color);" data-ar="تأكيد العملية" data-en="Confirm Action">Confirm Action</h3>
+            <p id="confirm-message" class="mb-6"></p>
+            <div class="flex justify-end space-x-4">
+                <button id="confirm-cancel-btn" class="px-4 py-2 text-white" style="background-color: var(--secondary-steel); color: var(--bg-dark);" data-ar="إلغاء" data-en="Cancel">Cancel</button>
+                <button id="confirm-ok-btn" class="px-4 py-2 btn-accent" data-ar="تأكيد" data-en="Confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="review-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[200] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-8 w-full max-w-lg shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <button id="close-review-modal-btn" class="absolute top-4 right-4 text-2xl hover:text-white" style="color: var(--secondary-steel);"><i class="fas fa-times"></i></button>
+            <h3 class="text-3xl font-bold mb-6 text-center" style="color: var(--accent-color);" data-ar="إضافة رأيك وتقييمك" data-en="Add Your Review & Rating">Add Your Review & Rating</h3>
+            
+            <form id="review-form" class="space-y-4">
+                <input type="hidden" id="review-product-id">
+
+                <div id="product-review-info" class="text-center text-lg mb-4" style="color: var(--secondary-steel);"></div>
+                
+                <h4 class="text-xl font-bold pt-4 border-t border-gray-700" data-ar="تقييم المنتج (نجوم)" data-en="Product Rating (Stars)">Product Rating (Stars)</h4>
+                <div id="rating-stars" class="flex justify-center text-4xl space-x-1" data-ar="اتجاه" data-en="ltr">
+                    </div>
+                <input type="hidden" id="review-rating" required>
+
+                <h4 class="text-xl font-bold pt-4 border-t border-gray-700" data-ar="مراجعتك" data-en="Your Review">Your Review</h4>
+                <textarea id="review-comment" placeholder="اكتب رأيك هنا..." required class="w-full p-3 input-field h-32" data-ar-placeholder="اكتب رأيك هنا..." data-en-placeholder="Write your review here..."></textarea>
+                
+                <p id="review-error-msg" class="text-red-500 text-sm hidden"></p>
+
+                <button type="submit" id="submit-review-btn" class="w-full py-3 text-xl btn-accent" data-ar="إرسال المراجعة" data-en="Submit Review">Submit Review</button>
+            </form>
+
+            <div id="existing-reviews-section" class="mt-8 pt-4 border-t border-gray-700 max-h-64 overflow-y-auto">
+                 <h4 class="text-xl font-bold mb-3" data-ar="مراجعات العملاء" data-en="Customer Reviews">Customer Reviews</h4>
+                 <div id="existing-reviews" class="space-y-4">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+    <nav id="navbar" class="sticky top-0 z-50 p-4" style="background-color: var(--card-bg);">
+        <div class="container mx-auto flex justify-between items-center h-full">
+            <a href="#" class="text-3xl font-bold" style="color: var(--accent-color);">YOUNG</a>
+
+            <div id="nav-links" class="hidden md:flex space-x-6 text-lg" dir="ltr">
+                <a href="#products" class="nav-link hover:text-white transition-colors" data-ar="المنتجات" data-en="Products" style="color: var(--text-light);">Products</a>
+                <a href="#about-section" class="nav-link hover:text-white transition-colors" data-ar="من نحن" data-en="About Us" style="color: var(--text-light);">About Us</a>
+            </div>
+
+            <div class="flex items-center space-x-4 md:space-x-6">
+                
+                <button id="lang-toggle" class="text-xl px-2 py-1 transition-colors hover:text-gray-400" style="color: var(--text-light);" data-lang="en" title="Toggle Language">
+                    <i class="fas fa-globe"></i>
+                </button>
+                
+                <button id="login-btn" class="text-xl hover:opacity-80 transition-opacity" style="color: var(--text-light);"><i class="fas fa-user"></i></button>
+                
+                <button id="cart-icon" class="text-xl hover:opacity-80 transition-opacity relative" style="color: var(--text-light);"><i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 text-xs w-5 h-5 flex items-center justify-center font-bold btn-accent hidden">0</span>
+                </button>
+                
+                <button id="menu-toggle" class="text-xl md:hidden" style="color: var(--text-light);"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 text-center border-t border-gray-700 pt-4">
+            <a href="#products" class="block py-2 nav-link hover:bg-gray-700 transition-colors" data-ar="المنتجات" data-en="Products">Products</a>
+            <a href="#about-section" class="block py-2 nav-link hover:bg-gray-700 transition-colors" data-ar="من نحن" data-en="About Us">About Us</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8 min-h-screen">
+        <section id="products" class="pt-8">
+            <h2 id="main-title" class="text-4xl md:text-5xl font-extrabold mb-8 text-center" style="color: var(--accent-color);" data-ar="اكتشف أحدث منتجاتنا" data-en="Discover Our Latest Arrivals">Discover Our Latest Arrivals</h2>
+            
+            <div id="add-product-container" class="mb-6 text-center hidden">
+                <button id="add-new-product-btn" class="px-6 py-3 text-xl btn-accent" data-ar="➕ إضافة منتج جديد" data-en="➕ Add New Product">➕ Add New Product</button>
+                <p class="text-sm mt-2" style="color: var(--secondary-steel);" data-ar="* أنت في وضع الإدارة (للتعديل والحذف)." data-en="* You are in Admin Mode (for editing and deleting).">* أنت في وضع الإدارة (للتعديل والحذف).</p>
+            </div>
+
+            <div id="category-filter" class="flex flex-wrap justify-center gap-3 md:gap-5 mb-12">
+                <p id="category-loading" class="text-sm" style="color: var(--secondary-steel);" data-ar="جاري تحميل الأقسام..." data-en="Loading categories...">Loading categories...</p>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
+                <p id="loading-msg" class="col-span-full text-center text-2xl p-20" style="color: var(--secondary-steel);" data-ar="جارِ تحميل المنتجات..." data-en="Loading products...">Loading products...</p>
+                </div>
+        </section>
+
+        <section id="about-section" class="pt-16 pb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-8 text-center" style="color: var(--accent-color);" data-ar="من نحن" data-en="About YOUNG">About YOUNG</h2>
+            <div class="max-w-4xl mx-auto p-6 about-card shadow-xl" style="background-color: var(--card-bg);">
+                <p class="text-lg leading-relaxed mb-6" data-ar="في 'YOUNG'، نؤمن بأن الأناقة والجودة يجب أن تكون في متناول الجميع. نحن لسنا مجرد متجر ملابس رجالية، بل وجهتك للحصول على أحدث صيحات الموضة التي تعكس شخصيتك الشبابية المميزة." data-en="At 'YOUNG', we believe style and quality should be accessible to everyone. We are more than just a men's clothing store; we are your destination for the latest fashion trends that reflect your distinct young personality.">
+                    في 'YOUNG'، نؤمن بأن الأناقة والجودة يجب أن تكون في متناول الجميع. نحن لسنا مجرد متجر ملابس رجالية، بل وجهتك للحصول على أحدث صيحات الموضة التي تعكس شخصيتك الشبابية المميزة.
+                </p>
+
+                <h3 class="text-2xl font-bold mb-3" style="color: var(--secondary-steel);" data-ar="ميزات خدماتنا" data-en="Our Service Commitment">Our Service Commitment</h3>
+                <ul class="space-y-4 text-base list-disc pr-6">
+                    <li data-ar="**منتجات مطابقة للواقع:** نضمن لك أن المنتج الذي تراه في الموقع هو المنتج الذي ستستلمه تماماً. جودة الخامة والتفاصيل لا تقل عن الصورة المعروضة." data-en="**True-to-Life Products:** We guarantee that the product you see on the website is the exact product you will receive. The quality and details match the displayed image.">
+                        **منتجات مطابقة للواقع:** نضمن لك أن المنتج الذي تراه في الموقع هو المنتج الذي ستستلمه تماماً. جودة الخامة والتفاصيل لا تقل عن الصورة المعروضة.
+                    </li>
+                    <li data-ar="**خدمة التوصيل السريع:** نولي أهمية قصوى لوقتك. استمتع بخدمة توصيل فائقة السرعة تضمن وصول طلبك إليك في أقرب وقت ممكن." data-en="**Express Delivery Service:** We value your time immensely. Enjoy a super-fast delivery service ensuring your order reaches you as quickly as possible.">
+                        **خدمة التوصيل السريع:** نولي أهمية قصوى لوقتك. استمتع بخدمة توصيل فائقة السرعة تضمن وصول طلبك إليك في أقرب وقت ممكن.
+                    </li>
+                    <li data-ar="**شاهد قبل أن تدفع (معاينة):** لديك الحق الكامل في **معاينة المنتج** قبل الدفع والاستلام. إذا لم يعجبك أو لم يكن مطابقاً لتوقعاتك، يمكنك إلغاء الطلب فوراً." data-en="**See Before You Pay (Inspection):** You have the full right to **inspect the product** before payment and receipt. If you don't like it or it doesn't meet your expectations, you can cancel the order immediately.">
+                        **شاهد قبل أن تدفع (معاينة):** لديك الحق الكامل في **معاينة المنتج** قبل الدفع والاستلام. إذا لم يعجبك أو لم يكن مطابقاً لتوقعاتك، يمكنك إلغاء الطلب فوراً.
+                    </li>
+                    <li data-ar="**سهولة الاستبدال والإلغاء:** في حال الإلغاء أو الاستبدال بعد المعاينة، نطلب فقط دفع رسوم خدمة التوصيل دون أي رسوم أخرى." data-en="**Easy Exchange and Cancellation:** In case of cancellation or exchange after inspection, we only request payment for the delivery service fee, with no other charges.">
+                        **سهولة الاستبدال والإلغاء:** في حال الإلغاء أو الاستبدال بعد المعاينة، نطلب فقط دفع رسوم خدمة التوصيل دون أي رسوم أخرى.
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <div id="auth-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[100] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-8 w-full modal-content-xl max-w-xl shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-2xl hover:text-white" style="color: var(--secondary-steel);"><i class="fas fa-times"></i></button>
+            <h3 id="modal-title" class="text-3xl font-bold mb-6  text-center" style="color: var(--accent-color);" data-ar="تسجيل الدخول" data-en="Login">Login</h3>
+            
+            <form id="auth-form" class="space-y-4">
+                <input type="hidden" id="auth-mode" value="login"> 
+                <p id="auth-error-msg" class="text-sm text-center text-red-500 hidden"></p>
+                
+                <input type="text" id="display-name" placeholder="الاسم الكامل" class="w-full p-3 input-field hidden" data-ar-placeholder="الاسم الكامل" data-en-placeholder="Full Name">
+                
+                <input type="email" id="email" placeholder="Email" required class="w-full p-3 input-field" data-ar-placeholder="البريد الإلكتروني" data-en-placeholder="Email">
+                
+                <div class="relative">
+                    <input type="password" id="password" placeholder="Password" required class="w-full p-3 input-field pr-12" data-ar-placeholder="كلمة المرور" data-en-placeholder="Password">
+                    <button type="button" id="toggle-password-btn" class="absolute inset-y-0 right-0 px-3 flex items-center text-xl text-gray-400 hover:text-white" style="color: var(--secondary-steel);">
+                        <i class="fas fa-eye-slash" id="password-icon"></i>
+                    </button>
+                </div>
+
+                <button type="submit" id="auth-submit-btn" class="w-full py-3 text-xl btn-accent" data-ar="دخول" data-en="Login">Login</button>
+                
+                <div id="mode-toggle-area" class="text-center pt-2 border-t border-gray-700/50">
+                    <p id="toggle-text" class="text-sm" style="color: var(--secondary-steel);" data-ar="ليس لديك حساب؟" data-en="Don't have an account?">Don't have an account?</p>
+                    <button type="button" id="toggle-auth-mode-btn" class="text-sm font-semibold mt-1 hover:text-white transition-colors" style="color: var(--accent-color);" data-ar="إنشاء حساب" data-en="Sign Up">Sign Up</button>
+                </div>
+                
+                <p id="admin-note" class="text-center text-xs pt-4" style="color: var(--secondary-steel);" data-ar="* يُرجى استخدام إيميل المدير المسجل للميزات الإدارية." data-en="* Please use the registered Admin email for administrative features.">
+                    * يُرجى استخدام إيميل المدير المسجل للميزات الإدارية.
+                </p>
+            </form>
+
+            <div id="logout-area" class="text-center hidden">
+                <p id="welcome-msg" class="text-lg mb-6"></p>
+                <button id="logout-btn" class="w-full py-3 text-xl" style="background-color: var(--secondary-steel); color: var(--bg-dark);" data-ar="تسجيل الخروج" data-en="Logout">Logout</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="cart-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[100] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-6 w-full modal-content-xl max-w-xl shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <button id="close-cart-btn" class="absolute top-3 right-3 text-2xl hover:text-white" style="color: var(--secondary-steel);"><i class="fas fa-times"></i></button>
+            <h3 id="cart-title" class="text-3xl font-bold mb-4" style="color: var(--accent-color);" data-ar="سلة التسوق" data-en="Shopping Cart">Shopping Cart</h3>
+            
+            <div id="cart-items" class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                <p id="empty-cart-msg" style="color: var(--secondary-steel);" data-ar="سلتك فارغة حاليًا." data-en="Your cart is currently empty.">Your cart is currently empty.</p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-700">
+                <p class="text-2xl font-bold flex justify-between">
+                    <span id="total-text" data-ar="المجموع الكلي:" data-en="Total:">Total:</span>
+                    <span id="cart-total" style="color: var(--accent-color);">0.00 ج.م</span>
+                </p>
+                <button id="proceed-to-shipping-btn" class="w-full mt-4 py-3 text-xl btn-accent" data-ar="إتمام الشراء" data-en="Checkout">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[110] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-8 w-full modal-content-xl max-w-xl shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <button id="close-admin-modal-btn" class="absolute top-4 right-4 text-2xl hover:text-white" style="color: var(--secondary-steel);"><i class="fas fa-times"></i></button>
+            <h3 id="admin-modal-title" class="text-3xl font-bold mb-6 text-center" style="color: var(--accent-color);" data-ar="إضافة / تعديل منتج" data-en="Add / Edit Product">Add / Edit Product</h3>
+            
+            <form id="product-crud-form" class="space-y-4">
+                <input type="hidden" id="product-firestore-id-field">
+
+                <input type="text" id="name-ar" placeholder="Product Name (Arabic)" required class="w-full p-3 input-field" data-ar-placeholder="اسم المنتج (عربي)">
+                <input type="text" id="name-en" placeholder="Product Name (English)" required class="w-full p-3 input-field" data-en-placeholder="Product Name (English)">
+
+                <input type="text" id="category-ar" placeholder="Category (Arabic: T-Shirt, Hoodie, ...)" required class="w-full p-3 input-field" data-ar-placeholder="الفئة (عربي: تيشيرت, هودي, ...)">
+                <input type="text" id="category-en" placeholder="Category (English: T-Shirt, Hoodie, ...)" required class="w-full p-3 input-field" data-en-placeholder="Category (English: T-Shirt, Hoodie, ...)">
+
+                <input type="number" step="0.01" id="price" placeholder="Price" required class="w-full p-3 input-field" data-ar-placeholder="السعر">
+                
+                <div class="mt-4">
+                    <h4 class="text-base font-semibold mb-1" data-ar="رابط الصورة (URL)" data-en="Image URL">Image URL</h4>
+                    <input type="url" id="img" placeholder="https://placehold.co/400x500..." required class="w-full p-3 input-field">
+                    <p class="text-xs mt-1" style="color: var(--secondary-steel);" data-ar="* يجب إدخال رابط صورة (URL) خارجي. لا يدعم تحميل الملفات." data-en="* Must enter an external Image URL. File upload is not supported.">* يجب إدخال رابط صورة (URL) خارجي. لا يدعم تحميل الملفات.</p>
+                </div>
+
+
+                <div class="flex space-x-4">
+                    <button type="submit" id="save-product-btn" class="w-full py-3 text-xl btn-accent" data-ar="حفظ المنتج" data-en="Save Product">Save Product</button>
+                    <button type="button" id="delete-product-btn" class="py-3 text-xl w-1/3 hover:bg-red-700 transition-colors hidden" style="background-color: #9A3030; color: var(--text-light);" data-ar="حذف" data-en="Delete">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="shipping-details-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[130] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-8 w-full modal-content-xl max-w-xl shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <button id="close-shipping-details-modal-btn" class="absolute top-4 right-4 text-2xl hover:text-white" style="color: var(--secondary-steel);"><i class="fas fa-times"></i></button>
+            <h3 class="text-3xl font-bold mb-6 text-center" style="color: var(--accent-color);" data-ar="1. إدخال بيانات الشحن" data-en="1. Enter Shipping Details">1. Enter Shipping Details</h3>
+            
+            <form id="shipping-details-form" class="space-y-4">
+                <p class="text-2xl font-extrabold text-center mb-4" data-ar="المجموع المستحق: " data-en="Total: ">
+                    <span data-ar="المجموع المستحق:" data-en="Total:">Total:</span> 
+                    <span id="shipping-details-total-display" class="font-extrabold" style="color: var(--accent-color);">0.00 ج.م</span>
+                </p>
+
+                <h4 class="text-xl font-bold pt-4 border-t border-gray-700" data-ar="بيانات الشحن المطلوبة" data-en="Required Shipping Details">Required Shipping Details</h4>
+                <input type="text" id="full-name-shipping" placeholder="الاسم الرباعي" required class="w-full p-3 input-field" data-ar-placeholder="الاسم الرباعي" data-en-placeholder="Full Name">
+                <input type="tel" id="phone-number" placeholder="رقم الهاتف (01xxxxxxxxx)" pattern="[0-9]{11}" required class="w-full p-3 input-field" data-ar-placeholder="رقم الهاتف" data-en-placeholder="Phone Number">
+                
+                <div class="flex space-x-4">
+                    <input type="text" id="city" placeholder="المدينة" required class="w-1/2 p-3 input-field" data-ar-placeholder="المدينة" data-en-placeholder="City">
+                    <input type="text" id="address" placeholder="العنوان التفصيلي" required class="w-1/2 p-3 input-field" data-ar-placeholder="العنوان التفصيلي" data-en-placeholder="Detailed Address">
+                </div>
+                
+                <button type="submit" id="confirm-shipping-btn" class="w-full mt-6 py-3 text-xl btn-accent" data-ar="تأكيد البيانات والانتقال للدفع" data-en="Confirm & Proceed to Payment">Confirm & Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="payment-options-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden z-[140] flex items-center justify-center backdrop-blur-sm">
+        <div class="p-8 w-full modal-content-xl max-w-xl shadow-2xl relative" style="background-color: var(--card-bg); color: var(--text-light);">
+            <button id="close-payment-options-modal-btn" class="absolute top-4 right-4 text-2xl hover:text-white" style="color: var(--secondary-steel);"><i class="fas fa-times"></i></button>
+            <h3 class="text-3xl font-bold mb-6 text-center" style="color: var(--accent-color);" data-ar="2. اختيار طريقة الدفع وتأكيد الطلب" data-en="2. Choose Payment Method & Confirm Order">2. Choose Payment Method & Confirm Order</h3>
+            
+            <form id="payment-options-form" class="space-y-4">
+                <p class="text-2xl font-extrabold text-center mb-4" data-ar="المجموع المستحق: " data-en="Total: ">
+                    <span data-ar="المجموع الكلي:" data-en="Total:">Total:</span> 
+                    <span id="payment-options-total-display" class="font-extrabold" style="color: var(--accent-color);">0.00 ج.م</span>
+                </p>
+
+                <h4 class="text-xl font-bold pt-4 border-t border-gray-700" data-ar="طريقة الدفع" data-en="Payment Method">Payment Method</h4>
+                <div class="space-y-3">
+                    <label class="block p-3 border border-gray-700 hover:border-accent-color transition-colors cursor-pointer">
+                        <input type="radio" name="payment-method" value="visa" class="mr-2" required checked>
+                        <i class="fab fa-cc-visa mr-2 text-4xl" style="color: #60A5FA;"></i> 
+                        <span class="text-lg font-semibold" data-ar="بطاقة ائتمانية (فيزا/ماستركارد)" data-en="Credit Card (Visa/Mastercard)">بطاقة ائتمانية (فيزا/ماستركارد)</span>
+                    </label>
+                </div>
+                
+                <div id="visa-details" class="space-y-4 pt-4 border-t border-gray-700">
+                    <h5 class="text-lg font-bold" data-ar="إدخال تفاصيل البطاقة لإتمام الدفع" data-en="Enter Card Details to Finalize Payment">Enter Card Details to Finalize Payment</h5>
+                    <input type="text" id="card-number" placeholder="رقم البطاقة (16 رقم)" pattern="[0-9]{16}" required class="w-full p-3 input-field" data-ar-placeholder="رقم البطاقة" data-en-placeholder="Card Number">
+                    <div class="flex space-x-4">
+                        <input type="text" id="expiry-date" placeholder="تاريخ الانتهاء (MM/YY)" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" required class="w-1/2 p-3 input-field" data-ar-placeholder="تاريخ الانتهاء" data-en-placeholder="Expiry (MM/YY)">
+                        <input type="text" id="cvv" placeholder="CVV (3 أرقام)" pattern="[0-9]{3}" required class="w-1/2 p-3 input-field" data-ar-placeholder="CVV" data-en-placeholder="CVV">
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 pt-4 border-t border-gray-700 items-center justify-between">
+                    <button type="button" id="back-to-shipping-btn" class="back-button-icon" title="Back to Shipping Details" data-ar="العودة لبيانات الشحن" data-en="Back to Shipping Details">
+                         <i class="fas fa-arrow-left block"></i>
+                    </button>
+
+                    <a href="https://wa.me/201012345678?text=Hello, I have an inquiry about payment/order details." target="_blank" class="flex-shrink-0 w-12 h-12 flex items-center justify-center font-bold transition-colors rounded-full" style="background-color: #25D366; color: var(--bg-dark);" title="لأي استفسار">
+                         <i class="fab fa-whatsapp text-xl" style="color: var(--bg-dark);"></i> 
+                    </a>
+                    
+                    <button type="submit" id="finalize-order-btn" class="w-2/3 py-3 text-xl btn-accent" data-ar="تأكيد الطلب والدفع" data-en="Finalize Order & Pay">تأكيد الطلب والدفع</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <footer class="p-6 text-center text-sm mt-12" style="background-color: var(--card-bg); color: var(--secondary-steel);">
+        <p id="footer-text"> YOUNG &copy; 2024. All Rights Reserved.</p>
+    </footer>
+
+    <a href="https://wa.me/201012345678?text=Hello, I have an inquiry about the products in the YOUNG store." target="_blank" class="whatsapp-float" title="WhatsApp Chat">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCustomToken, signInAnonymously, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, setDoc, deleteDoc, onSnapshot, collection, query, where, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // =======================================================
+        //                 Firebase Setup & Globals
+        // =======================================================
+        const PRODUCTS_COLLECTION_PATH = 'young_products'; 
+        const ORDERS_COLLECTION_PATH = 'orders'; 
+        const REVIEWS_COLLECTION_PATH = 'reviews';
+        const WHATSAPP_NUMBER = '201012345678'; 
+        
+        // ** قائمة بيضاء (Whitelist) لإيميلات المديرين **
+        const ADMIN_EMAILS = [
+            'admin@young.com', // الإيميل الافتراضي للمدير
+            'raniahamouda19999@gmail.com', // **تم إضافة إيميلك هنا**
+        ];
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
+        // Firebase Config (Placeholder or provided)
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        if (Object.keys(firebaseConfig).length === 0) {
+            firebaseConfig.apiKey = "AIzaSyAU4ofYcvjGnpQisr7U14Iz4Vpy2fsVEnY";
+            firebaseConfig.authDomain = "shopapp-fd9e4.firebaseapp.com";
+            firebaseConfig.projectId = "shopapp-fd9e4";
+            firebaseConfig.storageBucket = "shopapp-fd9e4.firebasestorage.app";
+            firebaseConfig.appId = "1:283451358251:web:1cec81e90a86a1d4907e6e";
+        }
+        
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app;
+        let db;
+        let auth;
+        let productsCollectionRef;
+        let ordersCollectionRef;
+        let reviewsCollectionRef;
+
+        const appState = {
+            isLoggedIn: false, 
+            isAdmin: false, 
+            currentLang: 'en', 
+            products: [], 
+            cart: [],
+            isAuthReady: false,
+            userId: null, 
+            userEmail: null, 
+            userName: null,
+            cartTotal: 0,
+            currentCategory: 'all',
+            authMode: 'login',
+            currentProductId: null, // For review modal
+            // قائمة المنتجات الافتراضية المحدثة
+            defaultProducts: [
+                { firestoreId: 'mock1', name_ar: "تيشيرت 'رسومي أسود'", name_en: "Black Graphic T-Shirt", category_ar: "تيشيرت", category_en: "T-Shirt", price: 120.00, img: "https://placehold.co/400x500/343A40/FFF?text=T-Shirt", rating: 4.5, reviewCount: 2 },
+                { firestoreId: 'mock2', name_ar: "هودي 'ملك الشارع'", name_en: "Street King Hoodie", category_ar: "هودي", category_en: "Hoodie", price: 250.00, img: "https://placehold.co/400x500/2C3E50/FFF?text=Hoodie", rating: 3.8, reviewCount: 5 },
+                { firestoreId: 'mock3', name_ar: "بنطلون جينز نحيف", name_en: "Slim Fit Jeans", category_ar: "بنطلون", category_en: "Pants", price: 180.00, img: "https://placehold.co/400x500/4682B4/FFF?text=Jeans", rating: 4.1, reviewCount: 3 },
+                { firestoreId: 'mock4', name_ar: "جاكيت بومبر أسود", name_en: "Black Bomber Jacket", category_ar: "جاكيت", category_en: "Jacket", price: 350.00, img: "https://placehold.co/400x500/1C2833/FFF?text=Jacket", rating: 4.7, reviewCount: 1 },
+                { firestoreId: 'mock5', name_ar: "قميص كلاسيكي", name_en: "Classic Shirt", category_ar: "قميص", category_en: "Shirt", price: 150.00, img: "https://placehold.co/400x500/6A5ACD/FFF?text=Shirt", rating: 4.0, reviewCount: 6 },
+                { firestoreId: 'mock6', name_ar: "شورت رياضي خفيف", name_en: "Light Sport Shorts", category_ar: "شورت", category_en: "Shorts", price: 90.00, img: "https://placehold.co/400x500/5F9EA0/FFF?text=Shorts", rating: 3.5, reviewCount: 2 },
+                { firestoreId: 'mock7', name_ar: "سويتر صوف", name_en: "Wool Sweater", category_ar: "سويتر", category_en: "Sweater", price: 280.00, img: "https://placehold.co/400x500/8B4513/FFF?text=Sweater", rating: 4.9, reviewCount: 8 },
+                { firestoreId: 'mock8', name_ar: "قبعة بيسبول OG", name_en: "OG Baseball Cap", category_ar: "اكسسوارات", category_en: "Accessories", price: 80.00, img: "https://placehold.co/400x500/303030/FFF?text=Cap", rating: 4.2, reviewCount: 4 },
+                { firestoreId: 'mock9', name_ar: "حذاء رياضي 'سريع'", name_en: "Fast Runner Sneakers", category_ar: "أحذية", category_en: "Shoes", price: 350.00, img: "https://placehold.co/400x500/B22222/FFF?text=Shoes", rating: 3.9, reviewCount: 7 },
+            ]
+        };
+
+        const elements = {
+            langToggle: document.getElementById('lang-toggle'),
+            loginBtn: document.getElementById('login-btn'),
+            authModal: document.getElementById('auth-modal'),
+            closeModalBtn: document.getElementById('close-modal-btn'),
+            authForm: document.getElementById('auth-form'), 
+            authSubmitBtn: document.getElementById('auth-submit-btn'), 
+            authModeField: document.getElementById('auth-mode'), 
+            toggleAuthModeBtn: document.getElementById('toggle-auth-mode-btn'), 
+            logoutArea: document.getElementById('logout-area'),
+            logoutBtn: document.getElementById('logout-btn'),
+            productGrid: document.getElementById('product-grid'),
+            cartIcon: document.getElementById('cart-icon'),
+            cartModal: document.getElementById('cart-modal'),
+            closeCartBtn: document.getElementById('close-cart-btn'),
+            cartCount: document.getElementById('cart-count'),
+            addProductContainer: document.getElementById('add-product-container'),
+            addNewProductBtn: document.getElementById('add-new-product-btn'),
+            adminModal: document.getElementById('admin-modal'),
+            productCrudForm: document.getElementById('product-crud-form'),
+            
+            // Auth Fields
+            emailInput: document.getElementById('email'), 
+            passwordInput: document.getElementById('password'),
+            displayNameInput: document.getElementById('display-name'),
+
+            // Shipping/Payment
+            shippingDetailsModal: document.getElementById('shipping-details-modal'),
+            paymentOptionsModal: document.getElementById('payment-options-modal'),
+            backToShippingBtn: document.getElementById('back-to-shipping-btn'),
+            shippingDetailsTotalDisplay: document.getElementById('shipping-details-total-display'),
+            paymentOptionsTotalDisplay: document.getElementById('payment-options-total-display'),
+            proceedToShippingBtn: document.getElementById('proceed-to-shipping-btn'), 
+            
+            // Review Modal
+            reviewModal: document.getElementById('review-modal'),
+            closeReviewModalBtn: document.getElementById('close-review-modal-btn'),
+            reviewForm: document.getElementById('review-form'),
+            ratingStars: document.getElementById('rating-stars'),
+            reviewRatingField: document.getElementById('review-rating'),
+            reviewErrorMsg: document.getElementById('review-error-msg'),
+            existingReviewsContainer: document.getElementById('existing-reviews'),
+            productReviewInfo: document.getElementById('product-review-info'),
+            reviewComment: document.getElementById('review-comment'),
+            
+            // Other UI
+            categoryLoadingMsg: document.getElementById('category-loading'),
+            categoryFilter: document.getElementById('category-filter'),
+            loadingMsg: document.getElementById('loading-msg'),
+            confirmModal: document.getElementById('confirm-modal'),
+            confirmMessage: document.getElementById('confirm-message'),
+            confirmOkBtn: document.getElementById('confirm-ok-btn'),
+            confirmCancelBtn: document.getElementById('confirm-cancel-btn'),
+            
+            // NEW: Image Modal Elements
+            imageModal: document.getElementById('image-modal'),
+            modalImage: document.getElementById('modal-image'),
+        };
+        
+        let currentShippingDetails = {};
+
+
+        // =======================================================
+        // 1. Custom Confirmation Functions
+        // =======================================================
+
+        let resolveConfirmation;
+
+        function showConfirmationModal(message) {
+            elements.confirmMessage.textContent = message;
+            elements.confirmModal.classList.remove('hidden');
+
+            return new Promise(resolve => {
+                resolveConfirmation = resolve;
+            });
+        }
+        elements.confirmOkBtn.addEventListener('click', () => {
+             elements.confirmModal.classList.add('hidden');
+             if (resolveConfirmation) resolveConfirmation(true);
+        });
+        elements.confirmCancelBtn.addEventListener('click', () => {
+             elements.confirmModal.classList.add('hidden');
+             if (resolveConfirmation) resolveConfirmation(false);
+        });
+        
+        // NEW: Full Screen Image Display
+        function openImageModal(imgSrc) {
+            elements.modalImage.src = imgSrc;
+            elements.imageModal.classList.remove('hidden');
+        }
+
+
+        // =======================================================
+        // 2. Cart and Checkout Flow Functions
+        // =======================================================
+        function updateCartCount() {
+            const count = appState.cart.length;
+            appState.cartTotal = appState.cart.reduce((sum, item) => sum + item.price, 0);
+            elements.cartCount.textContent = count;
+            elements.cartCount.classList.toggle('hidden', count === 0);
+        }
+        
+        function toggleCartModal(show) {
+            elements.cartModal.classList.toggle('hidden', !show);
+            if (show) {
+                renderCartModal();
+            }
+        }
+
+        function addToCart(firestoreId) {
+            const productsSource = appState.products.length > 0 ? appState.products : appState.defaultProducts;
+            const product = productsSource.find(p => p.firestoreId === firestoreId);
+            if (product) {
+                appState.cart.push(product); 
+                updateCartCount();
+                console.log('Product added to cart. Cart count updated.');
+            }
+        }
+        
+        function renderCartModal() {
+            const isAR = appState.currentLang === 'ar';
+            const currency = isAR ? 'ج.م' : 'EGP';
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            
+            const emptyMsgText = isAR ? 'سلتك فارغة حاليًا.' : 'Your cart is currently empty.';
+            
+            if (appState.cart.length === 0) {
+                cartItemsContainer.innerHTML = `<p id="empty-cart-msg" style="color: var(--secondary-steel);">${emptyMsgText}</p>`;
+            } else {
+                 appState.cart.forEach((item, index) => {
+                    const name = isAR ? item.name_ar : item.name_en;
+                    const itemHtml = `
+                        <div class="flex items-center justify-between border-b border-gray-700 pb-3">
+                            <div class="flex items-center">
+                                <img src="${item.img}" onerror="this.src='https://placehold.co/60x60/CCCCCC/000?text=I'" alt="${name}" class="w-16 h-16 object-cover aspect-square mr-4 cart-item-image">
+                                <div>
+                                    <h4 class="font-semibold text-lg">${name}</h4>
+                                    <p class="text-sm" style="color: var(--secondary-steel);">${item.price.toFixed(2)} ${currency}</p>
+                                </div>
+                            </div>
+                            <button data-index="${index}" class="remove-from-cart-btn text-red-500 hover:text-red-700 text-xl">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.insertAdjacentHTML('beforeend', itemHtml);
+                });
+                document.querySelectorAll('.remove-from-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', removeFromCart);
+                });
+            }
+
+            document.getElementById('cart-total').textContent = `${appState.cartTotal.toFixed(2)} ${currency}`;
+            elements.proceedToShippingBtn.disabled = appState.cart.length === 0;
+            elements.proceedToShippingBtn.classList.toggle('opacity-50', appState.cart.length === 0);
+        }
+        
+        function removeFromCart(event) {
+            const index = parseInt(event.currentTarget.getAttribute('data-index'));
+            appState.cart.splice(index, 1);
+            updateCartCount();
+            renderCartModal();
+        }
+        
+        function openShippingDetailsModal() {
+            if (appState.cart.length === 0) return;
+            const isAR = appState.currentLang === 'ar';
+            const currency = isAR ? 'ج.م' : 'EGP';
+            elements.shippingDetailsTotalDisplay.textContent = `${appState.cartTotal.toFixed(2)} ${currency}`;
+            
+            elements.shippingDetailsModal.classList.remove('hidden');
+            elements.cartModal.classList.add('hidden');
+        }
+
+        function openPaymentOptionsModal() {
+            const isAR = appState.currentLang === 'ar';
+            const currency = isAR ? 'ج.م' : 'EGP';
+            elements.paymentOptionsTotalDisplay.textContent = `${appState.cartTotal.toFixed(2)} ${currency}`;
+            
+            elements.shippingDetailsModal.classList.add('hidden');
+            elements.paymentOptionsModal.classList.remove('hidden');
+        }
+        
+        document.getElementById('shipping-details-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            currentShippingDetails = {
+                fullName: document.getElementById('full-name-shipping').value,
+                phoneNumber: document.getElementById('phone-number').value,
+                city: document.getElementById('city').value,
+                address: document.getElementById('address').value,
+            };
+
+            openPaymentOptionsModal();
+        });
+        
+        document.getElementById('payment-options-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const isAR = appState.currentLang === 'ar';
+            const cardNumber = document.getElementById('card-number').value;
+            const expiryDate = document.getElementById('expiry-date').value;
+            const cvv = document.getElementById('cvv').value;
+
+            if (cardNumber.length !== 16 || expiryDate.length !== 5 || cvv.length !== 3) {
+                alert(isAR ? 'يجب إدخال جميع تفاصيل البطاقة بشكل صحيح.' : 'All card details must be entered correctly.');
+                return;
+            }
+
+            const orderItems = appState.cart.map(item => ({
+                id: item.firestoreId,
+                name_ar: item.name_ar,
+                price: item.price
+            }));
+            
+            const orderData = {
+                ...currentShippingDetails,
+                paymentMethod: 'visa',
+                total: appState.cartTotal,
+                items: orderItems,
+                userId: appState.userId || 'anonymous',
+                userName: appState.userName || 'Guest',
+                status: 'Paid - Visa (Mock)',
+                cardLastFour: cardNumber.slice(-4),
+                createdAt: serverTimestamp(),
+            };
+            
+            try {
+                // محاكاة عملية الدفع (يجب أن تنجح إذا كانت قواعد الأمان لـ 'orders' صحيحة)
+                const docRef = await addDoc(ordersCollectionRef, orderData);
+                appState.cart = []; 
+                updateCartCount();
+                elements.paymentOptionsModal.classList.add('hidden');
+                
+                await showConfirmationModal(isAR 
+                    ? `تم تأكيد طلبك رقم (${docRef.id}) والدفع بنجاح (محاكاة). سيتم شحن طلبك قريباً!` 
+                    : `Your order (${docRef.id}) has been successfully confirmed and paid (Mock). Your items will be shipped soon!`);
+                
+            } catch (error) {
+                console.error("Order Save Error (Check Security Rules for Orders):", error);
+                // رسالة خطأ واضحة للمستخدم
+                showConfirmationModal(isAR 
+                    ? `فشل حفظ الطلب. (هناك مشكلة في قواعد أمان Firestore لـ Orders). يُرجى التأكد من نشر القواعد الصحيحة.` 
+                    : `Failed to save order. (This is a Firestore Security Rules issue for Orders). Please ensure the correct rules are published.`);
+            }
+        });
+        
+        elements.backToShippingBtn.addEventListener('click', () => {
+            elements.paymentOptionsModal.classList.add('hidden');
+            elements.shippingDetailsModal.classList.remove('hidden');
+        });
+
+
+        // =======================================================
+        // 3. Review/Rating Functions
+        // =======================================================
+        
+        function renderStars(rating, isEditable = false) {
+            const stars = [];
+            const numRating = Math.round(rating); // Use rounded rating for display
+            
+            for (let i = 1; i <= 5; i++) {
+                const starClass = i <= numRating ? 'fas' : 'far'; // fas = filled, far = empty
+                const color = i <= numRating ? 'text-yellow-400' : 'text-gray-600';
+                
+                let starHtml = `<i data-rating="${i}" class="${starClass} fa-star ${color} ${isEditable ? 'cursor-pointer' : ''}"></i>`;
+                
+                if (!isEditable) {
+                    starHtml = `<i class="${starClass} fa-star ${color} text-sm"></i>`; // Smaller, non-interactive stars for display
+                }
+                stars.push(starHtml);
+            }
+            return isEditable ? stars.join('') : `<div class="flex items-center space-x-0.5">${stars.join('')} <span class="text-sm ml-2" style="color: var(--secondary-steel);">(${rating ? rating.toFixed(1) : 'N/A'})</span></div>`;
+        }
+
+        function openReviewModal(productId) {
+            const isAR = appState.currentLang === 'ar';
+            appState.currentProductId = productId;
+            const product = appState.products.find(p => p.firestoreId === productId) || appState.defaultProducts.find(p => p.firestoreId === productId);
+            
+            if (!product) return;
+
+            const name = isAR ? product.name_ar : product.name_en;
+            elements.productReviewInfo.innerHTML = `**${name}**`;
+            elements.reviewRatingField.value = '';
+            elements.reviewComment.value = '';
+            elements.reviewErrorMsg.classList.add('hidden');
+            
+            // Disable form if not logged in or is Admin
+            const submitBtn = document.getElementById('submit-review-btn');
+            const reviewComment = document.getElementById('review-comment');
+            
+            // FIX: Ensure the correct elements are targetted and enabled/disabled correctly
+            const canSubmit = appState.isLoggedIn && !appState.isAdmin && appState.userEmail;
+            submitBtn.disabled = !canSubmit;
+            reviewComment.disabled = !canSubmit;
+
+            if (!appState.isLoggedIn || !appState.userEmail) {
+                elements.reviewErrorMsg.textContent = isAR ? 'يجب تسجيل الدخول (كمشتري) لإضافة مراجعة.' : 'You must be logged in (as a shopper) to submit a review.';
+                elements.reviewErrorMsg.classList.remove('hidden');
+            } else if (appState.isAdmin) {
+                 elements.reviewErrorMsg.textContent = isAR ? 'المدراء لا يمكنهم إضافة مراجعات.' : 'Admins cannot submit reviews.';
+                elements.reviewErrorMsg.classList.remove('hidden');
+            } else {
+                elements.reviewErrorMsg.classList.add('hidden');
+            }
+
+            // 1. Setup Editable Stars
+            elements.ratingStars.innerHTML = renderStars(0, true);
+            document.querySelectorAll('#rating-stars i').forEach(star => {
+                if (canSubmit) {
+                    star.addEventListener('click', (e) => {
+                        const rating = parseInt(e.target.getAttribute('data-rating'));
+                        elements.reviewRatingField.value = rating;
+                        elements.ratingStars.innerHTML = renderStars(rating, true);
+                    });
+                }
+            });
+
+            // 2. Load existing reviews
+            loadReviewsForProduct(productId, isAR);
+
+            elements.reviewModal.classList.remove('hidden');
+        }
+        
+        async function loadReviewsForProduct(productId, isAR) {
+            elements.existingReviewsContainer.innerHTML = isAR ? `<p class="text-center" style="color: var(--secondary-steel);">جاري تحميل المراجعات...</p>` : `<p class="text-center" style="color: var(--secondary-steel);">Loading reviews...</p>`;
+            
+            try {
+                // Note: Indexing may be required for this query to work correctly
+                const q = query(reviewsCollectionRef, where('productId', '==', productId));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                     elements.existingReviewsContainer.innerHTML = isAR ? `<p class="text-center" style="color: var(--secondary-steel);">لا توجد مراجعات حالياً.</p>` : `<p class="text-center" style="color: var(--secondary-steel);">No reviews yet.</p>`;
+                     return;
+                }
+                
+                let reviewsHtml = '';
+                querySnapshot.forEach(doc => {
+                    const review = doc.data();
+                    const stars = renderStars(review.rating, false);
+                    const date = review.createdAt ? new Date(review.createdAt.toDate()).toLocaleDateString() : '';
+                    
+                    reviewsHtml += `
+                        <div class="p-3 border border-gray-800" style="background-color: var(--input-bg-dark);">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-sm" style="color: var(--accent-color);">${review.userName || 'Anonymous User'}</span>
+                                <span class="text-xs" style="color: var(--secondary-steel);">${date}</span>
+                            </div>
+                            <div class="mb-2">${stars}</div>
+                            <p class="text-sm">${review.comment}</p>
+                        </div>
+                    `;
+                });
+                elements.existingReviewsContainer.innerHTML = reviewsHtml;
+
+            } catch (error) {
+                 console.error("Error loading reviews:", error);
+                 elements.existingReviewsContainer.innerHTML = isAR ? `<p class="text-red-500 text-center">فشل تحميل المراجعات.</p>` : `<p class="text-red-500 text-center">Failed to load reviews.</p>`;
+            }
+        }
+
+        elements.reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const isAR = appState.currentLang === 'ar';
+            if (!appState.isLoggedIn || appState.isAdmin || !appState.userEmail) {
+                // Should be disabled but double-check
+                elements.reviewErrorMsg.textContent = isAR ? 'يجب تسجيل الدخول كمشتري لإضافة مراجعة.' : 'You must be logged in as a shopper to submit a review.';
+                elements.reviewErrorMsg.classList.remove('hidden');
+                return; 
+            }
+
+            const rating = parseInt(elements.reviewRatingField.value);
+            const comment = elements.reviewComment.value.trim();
+
+            if (!rating || !comment) {
+                elements.reviewErrorMsg.textContent = isAR ? 'يجب اختيار تقييم وكتابة تعليق.' : 'You must select a rating and write a comment.';
+                elements.reviewErrorMsg.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const reviewData = {
+                    productId: appState.currentProductId,
+                    userId: appState.userId,
+                    userName: appState.userName || appState.userEmail,
+                    rating: rating,
+                    comment: comment,
+                    createdAt: serverTimestamp(),
+                };
+
+                await addDoc(reviewsCollectionRef, reviewData);
+                
+                elements.reviewModal.classList.add('hidden');
+                elements.reviewForm.reset();
+                
+                // Show success confirmation
+                 showConfirmationModal(isAR ? 'تم إرسال مراجعتك بنجاح!' : 'Your review was submitted successfully!');
+                
+                // Trigger full UI update to refresh product ratings immediately
+                setupFirestoreListener(); 
+
+            } catch (error) {
+                 console.error("Error submitting review (Check Security Rules):", error);
+                 elements.reviewErrorMsg.textContent = isAR 
+                    ? `فشل إرسال المراجعة. (يُرجى تحديث قواعد أمان Firestore للـ Reviews).` 
+                    : `Failed to submit review. (Please update Firestore Security Rules for Reviews).`;
+                 elements.reviewErrorMsg.classList.remove('hidden');
+            }
+        });
+
+        elements.closeReviewModalBtn.addEventListener('click', () => {
+            elements.reviewModal.classList.add('hidden');
+            appState.currentProductId = null;
+        });
+
+
+        // =======================================================
+        // 4. Render and UI Helper Functions
+        // =======================================================
+        
+        function renderProductCard(product) {
+            const isAR = appState.currentLang === 'ar';
+            const name = isAR ? product.name_ar : product.name_en;
+            const currency = isAR ? 'ج.م' : 'EGP';
+            
+            const ratingHtml = renderStars(product.rating || 0, false);
+            const reviewCount = product.reviewCount || 0;
+
+            // Updated Review Icon HTML (placed next to rating)
+            const reviewIcon = `
+                <button 
+                    data-product-id="${product.firestoreId}" 
+                    class="review-trigger review-icon-product-card" 
+                    title="${reviewCount} ${isAR ? 'مراجعة' : 'Reviews'}"
+                >
+                    <i class="fas fa-comment-dots"></i><span class="text-sm ml-1">${reviewCount}</span>
+                </button>`;
+            
+            // Rating and Review Container
+            const ratingReviewContainer = `
+                 <div class="flex items-center mb-3">
+                    <p class="text-base font-semibold">${ratingHtml}</p>
+                    ${reviewIcon}
+                 </div>
+            `;
+
+            let actionButtons;
+
+            if (appState.isAdmin) {
+                actionButtons = `
+                    <div class="flex space-x-2" dir="ltr">
+                        <button data-firestore-id="${product.firestoreId}" class="edit-product-btn w-1/2 py-2 text-sm btn-accent" data-ar="تعديل" data-en="Edit">
+                            <i class="fas fa-edit"></i> ${isAR ? 'تعديل' : 'Edit'}
+                        </button>
+                        <button data-firestore-id="${product.firestoreId}" class="delete-product-action-btn w-1/2 py-2 text-sm" style="background-color: #9A3030; color: var(--text-light);" data-ar="حذف" data-en="Delete">
+                            <i class="fas fa-trash"></i> ${isAR ? 'حذف' : 'Delete'}
+                        </button>
+                    </div>
+                `;
+            } else {
+                actionButtons = `
+                    <button data-firestore-id="${product.firestoreId}" class="add-to-cart-btn w-full py-2 font-medium btn-accent" data-ar="أضف للسلة" data-en="Add to Cart">
+                        ${isAR ? 'أضف للسلة' : 'Add to Cart'}
+                    </button>
+                `;
+            }
+            
+            
+
+            return `
+                <div class="product-card p-4">
+                    <img 
+                        src="${product.img}" 
+                        onerror="this.src='https://placehold.co/400x500/CCCCCC/000?text=I'" 
+                        alt="${name}" 
+                        class="product-image-large product-image-trigger" 
+                        data-img-src="${product.img}"
+                    >
+                    <h4 class="text-lg font-bold mb-1">${name}</h4>
+                    ${ratingReviewContainer}
+                    <p class="text-base font-semibold mb-3" style="color: var(--accent-color);">${product.price.toFixed(2)} ${currency}</p>
+                    ${actionButtons}
+                </div>
+            `;
+        }
+        
+        function renderProductGrid(category) {
+            appState.currentCategory = category;
+            elements.productGrid.innerHTML = '';
+            
+            const productsSource = appState.products.length > 0 ? appState.products : appState.defaultProducts;
+            
+            if(appState.products.length > 0) {
+                 elements.loadingMsg.classList.add('hidden'); 
+            }
+
+            const isAR = appState.currentLang === 'ar';
+
+            if (productsSource.length === 0) {
+                 elements.productGrid.innerHTML = `<p class="col-span-full text-center text-xl p-10" style="color: var(--secondary-steel);">${isAR ? 'لا توجد منتجات متاحة حاليًا.' : 'No products currently available.'}</p>`;
+                 return;
+            }
+
+            const categoryKey = isAR ? 'category_ar' : 'category_en';
+            let filteredProducts = category === 'all'
+                ? productsSource
+                : productsSource.filter(p => p[categoryKey] === category);
+            
+            filteredProducts = filteredProducts.sort((a, b) => a.firestoreId.localeCompare(b.firestoreId));
+
+
+            if (filteredProducts.length === 0) {
+                 elements.productGrid.innerHTML = `<p class="col-span-full text-center text-xl p-10" style="color: var(--secondary-steel);">${isAR ? 'لا توجد منتجات في هذا القسم حاليًا.' : 'No products in this category yet.'}</p>`;
+                 return;
+            }
+            
+            let htmlContent = '';
+            filteredProducts.forEach(product => {
+                htmlContent += renderProductCard(product);
+            });
+            elements.productGrid.innerHTML = htmlContent;
+        }
+        
+        function renderCategoryFilters() {
+            elements.categoryFilter.innerHTML = '';
+            elements.categoryLoadingMsg.classList.add('hidden'); 
+
+            const isAR = appState.currentLang === 'ar';
+            const categoryKey = isAR ? 'category_ar' : 'category_en';
+            
+            const productsSource = appState.products.length > 0 ? appState.products : appState.defaultProducts;
+            const categories = productsSource.map(p => p[categoryKey]).filter(Boolean);
+            const uniqueCategories = [ ...new Set(categories) ];
+
+            const allBtnText = isAR ? 'الكل' : 'All';
+            const allIsActive = appState.currentCategory === 'all';
+            
+            elements.categoryFilter.insertAdjacentHTML('beforeend', `
+                <button data-category="all" class="category-btn px-4 py-2 font-semibold text-sm md:text-base transition-colors duration-200 ${allIsActive ? 'ring-2' : ''}" style="background-color: ${allIsActive ? 'var(--accent-color)' : 'var(--bg-dark)'}; color: ${allIsActive ? 'var(--text-light)' : 'var(--text-light)'}; border: 1px solid var(--secondary-steel);">
+                    ${allBtnText}
+                </button>
+            `);
+
+            uniqueCategories.forEach(cat => {
+                const isActive = appState.currentCategory === cat;
+                elements.categoryFilter.insertAdjacentHTML('beforeend', `
+                    <button data-category="${cat}" class="category-btn px-4 py-2 font-semibold text-sm md:text-base transition-colors duration-200 ${isActive ? 'ring-2' : ''}" style="background-color: ${isActive ? 'var(--accent-color)' : 'var(--bg-dark)'}; color: ${isActive ? 'var(--text-light)' : 'var(--text-light)'}; border: 1px solid var(--secondary-steel);">
+                        ${cat}
+                    </button>
+                `);
+            });
+            
+             document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const category = e.currentTarget.getAttribute('data-category');
+                    renderProductGrid(category);
+                    renderCategoryFilters();
+                });
+            });
+        }
+
+        function updateAdminModeUI() {
+            const isAR = appState.currentLang === 'ar';
+
+            elements.addProductContainer.classList.toggle('hidden', !appState.isAdmin);
+            
+            const welcomeMsgEl = document.getElementById('welcome-msg');
+            if (appState.isLoggedIn) {
+                 const role = appState.isAdmin 
+                    ? (isAR ? `مدير` : `Admin`) 
+                    : (isAR ? 'مشتري' : 'Shopper');
+                 welcomeMsgEl.innerHTML = isAR 
+                    ? `مرحبًا بك، <span class="font-bold">${appState.userName || appState.userEmail}</span> (${role})` 
+                    : `Welcome, <span class="font-bold">${appState.userName || appState.userEmail}</span> (${role})`;
+            } else {
+                 welcomeMsgEl.innerHTML = isAR ? `الزائر غير المسجل` : `Anonymous Guest`;
+            }
+
+            // Rerender to show/hide Admin buttons
+            renderProductGrid(appState.currentCategory);
+        }
+        
+        function toggleAuthModal(show) {
+            elements.authModal.classList.toggle('hidden', !show);
+            if (show) {
+                elements.authForm.classList.toggle('hidden', appState.isLoggedIn);
+                elements.logoutArea.classList.toggle('hidden', !appState.isLoggedIn);
+                
+                if (appState.isLoggedIn) {
+                    updateAuthModalUI('login'); 
+                } else {
+                    elements.authForm.reset();
+                    updateAuthModalUI('login');
+                }
+            }
+        }
+        
+        function updateUIforLanguage(lang) {
+            appState.currentLang = lang;
+            document.documentElement.lang = lang;
+            document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('[data-ar], [data-en]').forEach(el => {
+                const isPlaceholder = el.tagName === 'INPUT' || el.tagName === 'TEXTAREA';
+                const text = el.getAttribute(`data-${lang}`);
+                
+                if (text) {
+                    if (isPlaceholder) {
+                        el.placeholder = text;
+                    } else {
+                        el.textContent = text;
+                    }
+                }
+            });
+
+            updateAdminModeUI(); 
+            renderProductGrid(appState.currentCategory);
+            renderCategoryFilters();
+            renderCartModal(); 
+            updateAuthModalUI(appState.authMode);
+        }
+
+        function openAdminModal(firestoreId = null) {
+            if (!appState.isAdmin) return; 
+            
+            elements.adminModal.classList.remove('hidden');
+            const isAR = appState.currentLang === 'ar';
+            
+            elements.productCrudForm.reset();
+            document.getElementById('product-firestore-id-field').value = '';
+            document.getElementById('delete-product-btn').classList.add('hidden');
+
+            const productsSource = appState.products.length > 0 ? appState.products : appState.defaultProducts;
+
+            if (firestoreId) {
+                const product = productsSource.find(p => p.firestoreId === firestoreId);
+                if (!product) return;
+
+                document.getElementById('admin-modal-title').textContent = isAR ? "تعديل المنتج" : "Edit Product";
+                document.getElementById('product-firestore-id-field').value = product.firestoreId;
+                document.getElementById('name-ar').value = product.name_ar;
+                document.getElementById('name-en').value = product.name_en;
+                document.getElementById('category-ar').value = product.category_ar;
+                document.getElementById('category-en').value = product.category_en;
+                document.getElementById('price').value = product.price;
+                document.getElementById('img').value = product.img;
+                document.getElementById('delete-product-btn').classList.remove('hidden');
+                document.getElementById('save-product-btn').textContent = isAR ? "حفظ التغييرات" : "Save Changes";
+                
+                document.getElementById('delete-product-btn').onclick = async () => {
+                    const productName = product[`name_${appState.currentLang}`];
+                    const confirmed = await showConfirmationModal(`${isAR ? 'هل أنت متأكد من حذف المنتج: ' : 'Are you sure you want to delete the product: '}${productName}?`);
+                    if (confirmed) {
+                        deleteProduct(firestoreId, productName);
+                    }
+                };
+            } else {
+                document.getElementById('admin-modal-title').textContent = isAR ? "إضافة منتج جديد" : "Add New Product";
+                document.getElementById('save-product-btn').textContent = isAR ? "إضافة المنتج" : "Add Product";
+            }
+        }
+        
+        // =======================================================
+        // 5. Firebase and Firestore Functions
+        // =======================================================
+        
+        async function initializeFirebase() {
+            try {
+                if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
+                    appState.products = appState.defaultProducts;
+                    appState.isAuthReady = true;
+                    updateUIforLanguage(appState.currentLang);
+                    return;
+                }
+                
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                productsCollectionRef = collection(db, PRODUCTS_COLLECTION_PATH);
+                ordersCollectionRef = collection(db, ORDERS_COLLECTION_PATH); 
+                reviewsCollectionRef = collection(db, REVIEWS_COLLECTION_PATH);
+
+                // Initial authentication check: try custom token or sign in anonymously
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken).catch(e => {
+                         console.warn("Custom token failed, signing in anonymously.", e);
+                         return signInAnonymously(auth);
+                    });
+                } else {
+                    await signInAnonymously(auth).catch(e => console.error("Anonymous sign-in failed:", e));
+                }
+
+                auth.onAuthStateChanged(user => {
+                    if (user && user.email) {
+                         appState.isLoggedIn = true; 
+                         appState.userId = user.uid;
+                         appState.userEmail = user.email;
+                         appState.userName = user.displayName;
+                         
+                         // Determine Admin Status based on Whitelist
+                         appState.isAdmin = ADMIN_EMAILS.includes(user.email);
+                    } else if (user && !user.email) {
+                        // Anonymous user (guest)
+                         appState.isLoggedIn = true; 
+                         appState.userId = user.uid;
+                         appState.userEmail = null;
+                         appState.userName = null;
+                         appState.isAdmin = false;
+                    } else {
+                         // Signed out
+                         appState.isLoggedIn = false; 
+                         appState.userId = null;
+                         appState.userEmail = null;
+                         appState.userName = null;
+                         appState.isAdmin = false;
+                    }
+                    appState.isAuthReady = true;
+                    // FIX: Ensure UI update happens here after state change
+                    updateAdminModeUI(); 
+                });
+
+                setupFirestoreListener();
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                appState.products = appState.defaultProducts;
+                appState.isAuthReady = true;
+                updateUIforLanguage(appState.currentLang);
+            }
+        }
+        
+        function setupFirestoreListener() {
+            if (!productsCollectionRef) {
+                elements.loadingMsg.classList.add('hidden');
+                return;
+            }
+            elements.loadingMsg.classList.remove('hidden');
+
+            onSnapshot(productsCollectionRef, async (snapshot) => {
+                const updatedProducts = [];
+                const productIds = [];
+                snapshot.forEach((doc) => {
+                    const productData = doc.data();
+                    updatedProducts.push({ firestoreId: doc.id, ...productData });
+                    productIds.push(doc.id);
+                });
+                
+                await calculateAllRatings(updatedProducts, productIds);
+                
+                appState.products = updatedProducts;
+                elements.loadingMsg.classList.add('hidden');
+                updateUIforLanguage(appState.currentLang); // Re-render everything with new data
+            }, (error) => {
+                console.error("Error listening to Products (Check Security Rules):", error);
+                appState.products = appState.defaultProducts;
+                elements.loadingMsg.textContent = "Failed to load real data. Showing default products.";
+                elements.loadingMsg.classList.remove('hidden');
+                updateUIforLanguage(appState.currentLang);
+            });
+        }
+        
+        async function calculateAllRatings(productsArray, productIds) {
+             if (productIds.length === 0) return;
+             
+             try {
+                // Get all reviews to calculate current ratings
+                const q = query(reviewsCollectionRef); 
+                const querySnapshot = await getDocs(q);
+                
+                const ratingsMap = {};
+                
+                querySnapshot.forEach(doc => {
+                    const review = doc.data();
+                    const id = review.productId;
+                    
+                    if (productIds.includes(id)) {
+                        if (!ratingsMap[id]) {
+                            ratingsMap[id] = { totalRating: 0, count: 0 };
+                        }
+                        ratingsMap[id].totalRating += review.rating;
+                        ratingsMap[id].count += 1;
+                    }
+                });
+                
+                productsArray.forEach(product => {
+                    const id = product.firestoreId;
+                    if (ratingsMap[id] && ratingsMap[id].count > 0) {
+                        product.rating = ratingsMap[id].totalRating / ratingsMap[id].count;
+                        product.reviewCount = ratingsMap[id].count;
+                    } else {
+                        product.rating = 0;
+                        product.reviewCount = 0;
+                    }
+                });
+
+             } catch (error) {
+                 console.error("Error calculating ratings:", error);
+             }
+        }
+        
+        // Admin CRUD Functions
+        async function saveProduct(e) {
+            e.preventDefault();
+            if (!appState.isAdmin) {
+                alert(appState.currentLang === 'ar' ? "ليس لديك صلاحية المدير لحفظ المنتجات." : "You do not have admin permission to save products.");
+                return;
+            }
+            const isAR = appState.currentLang === 'ar';
+            const firestoreId = document.getElementById('product-firestore-id-field').value;
+            
+            const productData = {
+                name_ar: document.getElementById('name-ar').value,
+                name_en: document.getElementById('name-en').value,
+                category_ar: document.getElementById('category-ar').value,
+                category_en: document.getElementById('category-en').value,
+                price: parseFloat(document.getElementById('price').value),
+                img: document.getElementById('img').value, 
+                updatedAt: serverTimestamp(),
+            };
+
+            try {
+                if (firestoreId && !firestoreId.startsWith('mock')) {
+                    const docRef = doc(db, PRODUCTS_COLLECTION_PATH, firestoreId);
+                    await setDoc(docRef, productData, { merge: true });
+                    console.log(isAR ? "تم تعديل المنتج بنجاح." : "Product updated successfully.");
+                } else {
+                    await addDoc(productsCollectionRef, {
+                        ...productData,
+                        createdAt: serverTimestamp(),
+                    });
+                    console.log(isAR ? "تمت إضافة المنتج بنجاح." : "Product added successfully.");
+                }
+                document.getElementById('admin-modal').classList.add('hidden');
+            } catch (error) {
+                console.error("CRUD Save Error (Check Security Rules):", error);
+                const errorMsg = isAR 
+                    ? `فشل حفظ المنتج. (تحقق من تسجيل الدخول كمدير وقواعد الأمان لـ young_products): ${error.message}`
+                    : `Failed to save product. (Check Admin login and Security Rules for young_products): ${error.message}`;
+                alert(errorMsg); 
+            }
+        }
+
+        async function deleteProduct(firestoreId, productName) {
+            if (!appState.isAdmin) return;
+            
+            if (firestoreId.startsWith('mock')) {
+                 document.getElementById('admin-modal').classList.add('hidden');
+                 return;
+            }
+                
+            try {
+                const docRef = doc(db, PRODUCTS_COLLECTION_PATH, firestoreId);
+                await deleteDoc(docRef);
+                document.getElementById('admin-modal').classList.add('hidden');
+            } catch (error) {
+                console.error("CRUD Delete Error (Check Security Rules):", error);
+                const isAR = appState.currentLang === 'ar';
+                const errorMsg = isAR 
+                    ? `فشل حذف المنتج. (تحقق من صلاحيات المدير وقواعد الأمان لـ young_products): ${error.message}`
+                    : `Failed to delete product. (Check Admin Permissions and Security Rules for young_products): ${error.message}`;
+                alert(errorMsg);
+            }
+        }
+        
+        // =======================================================
+        // 6. Auth Management
+        // =======================================================
+        
+        async function updateAuthModalUI(mode) {
+            const isAR = appState.currentLang === 'ar';
+            appState.authMode = mode;
+            elements.authModeField.value = mode;
+            
+            const isSignup = mode === 'signup';
+            
+            elements.displayNameInput.classList.toggle('hidden', !isSignup);
+            if(isSignup) elements.displayNameInput.setAttribute('required', 'true');
+            else elements.displayNameInput.removeAttribute('required');
+
+            if (mode === 'login') {
+                document.getElementById('modal-title').textContent = isAR ? "تسجيل الدخول" : "Login";
+                elements.authSubmitBtn.textContent = isAR ? "دخول" : "Login";
+                document.getElementById('toggle-text').textContent = isAR ? "ليس لديك حساب؟" : "Don't have an account?";
+                document.getElementById('toggle-auth-mode-btn').textContent = isAR ? "إنشاء حساب" : "Sign Up";
+            } else { // signup
+                document.getElementById('modal-title').textContent = isAR ? "إنشاء حساب جديد" : "Sign Up";
+                elements.authSubmitBtn.textContent = isAR ? "إنشاء حساب" : "Create Account";
+                document.getElementById('toggle-text').textContent = isAR ? "لديك حساب بالفعل؟" : "Already have an account?";
+                document.getElementById('toggle-auth-mode-btn').textContent = isAR ? "تسجيل الدخول" : "Login";
+            }
+            
+            document.getElementById('auth-error-msg').classList.add('hidden');
+        }
+
+        // Final Auth Form Submission Handler (Moved to global scope for cleaner access)
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            document.getElementById('auth-error-msg').classList.add('hidden');
+            
+            const email = elements.emailInput.value.trim();
+            const password = elements.passwordInput.value; 
+            const displayName = elements.displayNameInput.value.trim();
+            const isAR = appState.currentLang === 'ar';
+            const mode = elements.authModeField.value;
+
+            if (mode === 'login') {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password).catch(error => {
+                    console.error("Login Error:", error);
+                    let errorMessage = isAR ? 'الإيميل أو كلمة المرور غير صحيحة.' : 'Incorrect email or password.';
+                    document.getElementById('auth-error-msg').textContent = errorMessage;
+                    document.getElementById('auth-error-msg').classList.remove('hidden');
+                    return null;
+                });
+                if (userCredential) {
+                    elements.authForm.reset();
+                    toggleAuthModal(false);
+                }
+            } else {
+                if (!displayName) {
+                    document.getElementById('auth-error-msg').textContent = isAR ? 'يجب إدخال الاسم الكامل.' : 'Full name is required.';
+                    document.getElementById('auth-error-msg').classList.remove('hidden');
+                    return;
+                }
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password).catch(error => {
+                    console.error("Signup Error:", error);
+                    let errorMessage = isAR ? 'فشل إنشاء الحساب.' : 'Account creation failed.';
+                     if (error.code === 'auth/email-already-in-use') {
+                        errorMessage = isAR ? 'البريد الإلكتروني مُستخدم بالفعل.' : 'Email address is already in use.';
+                    }
+                    document.getElementById('auth-error-msg').textContent = errorMessage;
+                    document.getElementById('auth-error-msg').classList.remove('hidden');
+                    return null;
+                });
+                if (userCredential) {
+                    await updateProfile(userCredential.user, { displayName: displayName });
+                    elements.authForm.reset();
+                    toggleAuthModal(false);
+                }
+            }
+        });
+
+        document.getElementById('toggle-auth-mode-btn').addEventListener('click', () => {
+            const newMode = appState.authMode === 'login' ? 'signup' : 'login';
+            document.getElementById('auth-form').reset();
+            updateAuthModalUI(newMode);
+        });
+
+
+        // =======================================================
+        // 7. Initialization and Event Binding
+        // =======================================================
+        
+        window.onload = async () => {
+            await initializeFirebase();
+            
+            updateUIforLanguage(appState.currentLang); 
+
+            // Bind Admin Events
+            elements.addNewProductBtn.addEventListener('click', () => openAdminModal(null));
+            document.getElementById('close-admin-modal-btn').addEventListener('click', () => document.getElementById('admin-modal').classList.add('hidden'));
+            elements.productCrudForm.addEventListener('submit', saveProduct);
+
+            // Bind Navbar Events
+            // 1. Login/User Icon
+            elements.loginBtn.addEventListener('click', () => toggleAuthModal(true));
+            // 2. Cart Icon
+            elements.cartIcon.addEventListener('click', () => toggleCartModal(true));
+            // 3. Language Toggle
+            document.getElementById('lang-toggle').addEventListener('click', () => {
+                const newLang = appState.currentLang === 'ar' ? 'en' : 'ar';
+                updateUIforLanguage(newLang);
+            });
+            // 4. Mobile Menu
+            document.getElementById('menu-toggle').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
+
+            // Bind Modal Close Buttons
+            document.getElementById('close-modal-btn').addEventListener('click', () => toggleAuthModal(false));
+            document.getElementById('close-cart-btn').addEventListener('click', () => document.getElementById('cart-modal').classList.add('hidden'));
+            document.getElementById('close-review-modal-btn').addEventListener('click', () => document.getElementById('review-modal').classList.add('hidden'));
+            document.getElementById('close-shipping-details-modal-btn').addEventListener('click', () => elements.shippingDetailsModal.classList.add('hidden'));
+            document.getElementById('close-payment-options-modal-btn').addEventListener('click', () => elements.paymentOptionsModal.classList.add('hidden'));
+
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                try {
+                    // Sign out the current user
+                    await signOut(auth);
+                    // Sign in anonymously to maintain a UID for guests/non-logged in status
+                    await signInAnonymously(auth); 
+                    
+                    appState.cart = [];
+                    updateCartCount();
+                    toggleAuthModal(false);
+                    // The onAuthStateChanged listener will handle the UI update after anonymous sign-in
+                    
+                } catch (error) {
+                    console.error("Logout Error:", error);
+                }
+            });
+
+            // Bind Checkout Flow
+            elements.proceedToShippingBtn.addEventListener('click', openShippingDetailsModal); 
+            elements.backToShippingBtn.addEventListener('click', () => {
+                elements.paymentOptionsModal.classList.add('hidden');
+                elements.shippingDetailsModal.classList.remove('hidden');
+            });
+            
+            // Password Toggle
+            document.getElementById('toggle-password-btn').addEventListener('click', () => {
+                const isPassword = document.getElementById('password').type === 'password';
+                document.getElementById('password').type = isPassword ? 'text' : 'password';
+                document.getElementById('password-icon').classList.toggle('fa-eye', isPassword);
+                document.getElementById('password-icon').classList.toggle('fa-eye-slash', !isPassword);
+            });
+            
+            // Event Delegation for Product Grid Actions
+            elements.productGrid.addEventListener('click', async (e) => {
+                const target = e.target.closest('button, img'); // Check for button or img
+                if (!target) return;
+
+                const firestoreId = target.getAttribute('data-firestore-id');
+                const reviewId = target.getAttribute('data-product-id');
+                const imgSrc = target.getAttribute('data-img-src');
+                
+                // Handle Image Click
+                if (target.classList.contains('product-image-trigger') && imgSrc) {
+                     openImageModal(imgSrc);
+                     return;
+                }
+
+
+                if (target.classList.contains('edit-product-btn') && appState.isAdmin) {
+                    openAdminModal(firestoreId);
+                } else if (target.classList.contains('delete-product-action-btn') && appState.isAdmin) {
+                    const productsSource = appState.products.length > 0 ? appState.products : appState.defaultProducts;
+                    const product = productsSource.find(p => p.firestoreId === firestoreId);
+                    const productName = product ? product[`name_${appState.currentLang}`] : 'this product';
+
+                    const confirmed = await showConfirmationModal(`${appState.currentLang === 'ar' ? 'هل أنت متأكد من حذف المنتج: ' : 'Are you sure you want to delete the product: '}${productName}?`);
+                    if (confirmed) {
+                        deleteProduct(firestoreId, productName);
+                    }
+                } else if (target.classList.contains('add-to-cart-btn')) {
+                    addToCart(firestoreId);
+                } else if (target.classList.contains('review-trigger')) {
+                    openReviewModal(reviewId);
+                }
+            });
+        };
+        
+    </script>
+</body>
+</html>
